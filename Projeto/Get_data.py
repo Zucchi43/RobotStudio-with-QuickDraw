@@ -1,24 +1,32 @@
-from quickdraw import QuickDrawData
-#Escolha_do_usuario = input("O gostaria de desenhar? ")
-def pegar_desenho(Escolha = "Flower"):
-	qd = QuickDrawData()
-	#arquivo = open("data.doc","w")
-	arquivo_str =''
-	desenho = qd.get_drawing(Escolha)
+from quickdraw import QuickDrawData #API do quickdraw, necessita-se instalar atraves de "pip install quickdraw"
+import random #biblioteca de aleatoriedade do python
+
+#Função de pegar os dados na internet
+def pegar_desenho(Escolha = "flower"):
+	qd = QuickDrawData() #define todos o dataset disponivel
+	arquivo_str ='' #começa uma string onde as informaçoes serão escritas
+
+	if Escolha != "random":
+		desenho = qd.get_drawing(Escolha) #desenho especifico
+	else:
+		desenho = qd.get_drawing(random.choice(qd.drawing_names)) #desenho aleatorio
+
 	desenho.image.save("Desenho.png")
-	data_array = desenho.image_data
+	data_array = desenho.image_data #data bruto
+
 	print (data_array)
 	print(len(data_array))
-	#arquivo.write("{} ".format(len(data_array))) #number of strokes
+
+	#number of strokes
 	arquivo_str += "{} ".format(len(data_array))
+
 	for stroke in desenho.strokes:
-		#arquivo.write("{} ".format(len(stroke)))
+		#tamanho do stroke
 		arquivo_str += "{} ".format(len(stroke))
 		print(len(stroke))
+
 		for x,y in stroke:
-			#arquivo.write("{} {} ".format(x, y))
+			#stroke
 			arquivo_str += "{} {} ".format(x, y)
 
-		#print(len(stroke))
-	#arquivo.close()
-	return arquivo_str
+	return arquivo_str #devolve a string construida
